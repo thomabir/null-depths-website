@@ -1,0 +1,470 @@
+# Best achieved raw null depth of nulling interferometers.
+# Units: wavelength in µm. Null depth is a ratio without unit.
+#
+# Fields of a result:
+#   label           Short reference, for example "Author+Year (Instrument)".
+#   plot_label      Text on the plot. \n makes a line break. Optional, default label.
+#   first_author    Family name of the first author.
+#   year            Year of publication.
+#   instrument      Instrument or testbed name.
+#   setting         on-sky or testbed.
+#   status          published or in-preparation.
+#   wavelength_um   [min, max] for a broadband measurement, [value] for a narrowband measurement.
+#   null_depth      Best achieved raw null depth.
+#   url             Link to the publication. Optional.
+#   highlight       true to show the result as "This work". Optional.
+#   label_position  right, left, top or bottom. Optional, default right.
+
+results:
+  - label: "Hinz+1998 (MMT)"
+    first_author: Hinz
+    year: 1998
+    instrument: MMT
+    setting: on-sky
+    status: published
+    wavelength_um: [9.8, 10.5]
+    null_depth: 0.06
+    url: https://doi.org/10.1117/12.317108
+
+  - label: "Liu+2004 (BLINC)"
+    first_author: Liu
+    year: 2004
+    instrument: BLINC
+    setting: on-sky
+    status: published
+    wavelength_um: [9.8, 10.5]
+    null_depth: 0.04
+    url: http://dx.doi.org/10.1086/427922
+
+  - label: "Martinod+2021 (GLINT)"
+    first_author: Martinod
+    year: 2021
+    instrument: GLINT
+    setting: on-sky
+    status: published
+    wavelength_um: [1.525, 1.57]
+    null_depth: 0.0705
+    url: https://doi.org/10.1038/s41467-021-22769-x
+
+  - label: "Mennesson+2011 (PFN)"
+    plot_label: "Mennesson+2011\n(PFN)"
+    first_author: Mennesson
+    year: 2011
+    instrument: PFN
+    setting: on-sky
+    status: published
+    wavelength_um: [2, 2.3]
+    null_depth: 0.007
+    url: https://doi.org/10.1088/0004-637X/743/2/178
+    label_position: top
+
+  - label: "Defrere+2016 (LBTI)"
+    first_author: Defrere
+    year: 2016
+    instrument: LBTI
+    setting: on-sky
+    status: published
+    wavelength_um: [8, 13]
+    null_depth: 0.02
+    url: http://dx.doi.org/10.3847/0004-637X/824/2/66
+
+  - label: "Serabyn+2006 (Keck)"
+    first_author: Serabyn
+    year: 2006
+    instrument: Keck
+    setting: on-sky
+    status: published
+    wavelength_um: [8, 12]
+    null_depth: 0.01
+    url: https://doi.org/10.1117/12.672621
+    label_position: bottom
+
+  - label: "Peters+2008 (ANT)"
+    first_author: Peters
+    year: 2008
+    instrument: ANT
+    setting: testbed
+    status: published
+    wavelength_um: [8, 12]
+    null_depth: 1.2e-5
+    url: https://doi.org/10.1364/AO.47.003920
+
+  - label: "Gappinger+2009 (ANT)"
+    first_author: Gappinger
+    year: 2009
+    instrument: ANT
+    setting: testbed
+    status: published
+    wavelength_um: [8.3, 10.7]
+    null_depth: 4e-5
+    url: https://doi.org/10.1364/AO.48.000868
+
+  - label: "Gappinger+2009 (ANT)"
+    first_author: Gappinger
+    year: 2009
+    instrument: ANT
+    setting: testbed
+    status: published
+    wavelength_um: [8.6, 10.5]
+    null_depth: 2e-5
+    url: https://doi.org/10.1364/AO.48.000868
+
+  - label: "Samuele+2007"
+    first_author: Samuele
+    year: 2007
+    setting: testbed
+    status: published
+    wavelength_um: [0.62, 0.72]
+    null_depth: 1.06e-6
+    url: https://doi.org/10.1109/AERO.2007.353077
+
+  - label: "Weber+2004 (MAII)"
+    plot_label: "Weber+2004\n(MAII)"
+    first_author: Weber
+    year: 2004
+    instrument: MAII
+    setting: testbed
+    status: published
+    wavelength_um: [1.15, 1.95]
+    null_depth: 0.00018
+    url: https://doi.org/10.1117/12.550581
+    label_position: top
+
+  - label: "Buisset+2006 (MAII)"
+    plot_label: "Buisset+\n2006\n(MAII)"
+    first_author: Buisset
+    year: 2006
+    instrument: MAII
+    setting: testbed
+    status: published
+    wavelength_um: [1.47, 1.62]
+    null_depth: 9e-6
+    url: https://doi.org/10.1117/12.671113
+    label_position: left
+
+  - label: "Mennesson+2003 (Keck)"
+    first_author: Mennesson
+    year: 2003
+    instrument: Keck
+    setting: testbed
+    status: published
+    wavelength_um: [9.2, 12.35]
+    null_depth: 0.000133
+    url: https://ui.adsabs.harvard.edu/abs/2003ESASP.539..525M/abstract
+
+  - label: "Mennesson+2003 (Keck)"
+    first_author: Mennesson
+    year: 2003
+    instrument: Keck
+    setting: testbed
+    status: published
+    wavelength_um: [9.7, 11.65]
+    null_depth: 5.88e-5
+    url: https://ui.adsabs.harvard.edu/abs/2003ESASP.539..525M/abstract
+
+  - label: "Martinod+2021 (GLINT)"
+    first_author: Martinod
+    year: 2021
+    instrument: GLINT
+    setting: testbed
+    status: published
+    wavelength_um: [1.525, 1.57]
+    null_depth: 0.0035
+    url: https://doi.org/10.1038/s41467-021-22769-x
+
+  - label: "Gabor+2008 (SYNAPSE)"
+    plot_label: "Gabor+2008\n(SYNAPSE)"
+    first_author: Gabor
+    year: 2008
+    instrument: SYNAPSE
+    setting: testbed
+    status: published
+    wavelength_um: [2, 2.5]
+    null_depth: 0.00015
+    url: https://doi.org/10.1117/12.789269
+
+  - label: "Martin+2008 (PFN)"
+    first_author: Martin
+    year: 2008
+    instrument: PFN
+    setting: testbed
+    status: published
+    wavelength_um: [1.5, 1.8]
+    null_depth: 8e-5
+    url: https://doi.org/10.1117/12.789484
+    label_position: bottom
+
+  - label: "Sanny+2026 (NOTT)"
+    first_author: Sanny
+    year: 2026
+    instrument: NOTT
+    setting: testbed
+    status: published
+    wavelength_um: [3.7, 3.9]
+    null_depth: 0.00813
+    url: https://dx.doi.org/10.1051/0004-6361/202555865
+
+  - label: "LeDuigou+2012 (PERSEE)"
+    plot_label: "LeDuigou+2012\n(PERSEE)"
+    first_author: LeDuigou
+    year: 2012
+    instrument: PERSEE
+    setting: testbed
+    status: published
+    wavelength_um: [1.65, 2.45]
+    null_depth: 8.8e-6
+    url: https://doi.org/10.1117/12.2309220
+    label_position: bottom
+
+  - label: "Weber+2004 (MAII)"
+    plot_label: "Weber+2004\n(MAII)"
+    first_author: Weber
+    year: 2004
+    instrument: MAII
+    setting: testbed
+    status: published
+    wavelength_um: [1.55]
+    null_depth: 1.3e-5
+    url: https://doi.org/10.1117/12.550581
+    label_position: top
+
+  - label: "Ranganathan+2024 (NICE)"
+    plot_label: "Ranganathan+2024\n(NICE)"
+    first_author: Ranganathan
+    year: 2024
+    instrument: NICE
+    setting: testbed
+    status: published
+    wavelength_um: [4.7]
+    null_depth: 0.0002
+
+  - label: "Martin+2012 (PDT)"
+    first_author: Martin
+    year: 2012
+    instrument: PDT
+    setting: testbed
+    status: published
+    wavelength_um: [10]
+    null_depth: 3.8e-7
+    url: https://doi.org/10.1364/ao.51.003907
+
+  - label: "Gappinger+2009 (ANT)"
+    first_author: Gappinger
+    year: 2009
+    instrument: ANT
+    setting: testbed
+    status: published
+    wavelength_um: [10]
+    null_depth: 3.3e-6
+    url: https://doi.org/10.1364/AO.48.000868
+
+  - label: "Samuele+2007"
+    first_author: Samuele
+    year: 2007
+    setting: testbed
+    status: published
+    wavelength_um: [0.638]
+    null_depth: 1.11e-7
+    url: https://doi.org/10.1109/AERO.2007.353077
+
+  - label: "Gabor+2008 (SYNAPSE)"
+    plot_label: "Gabor+2008\n(SYNAPSE)"
+    first_author: Gabor
+    year: 2008
+    instrument: SYNAPSE
+    setting: testbed
+    status: published
+    wavelength_um: [3.39]
+    null_depth: 1e-5
+    url: https://doi.org/10.1117/12.789269
+    label_position: top
+
+  - label: "Hinz+2000 (BLINC)"
+    first_author: Hinz
+    year: 2000
+    instrument: BLINC
+    setting: testbed
+    status: published
+    wavelength_um: [10]
+    null_depth: 0.0003
+    url: https://doi.org/10.1117/12.390225
+    label_position: top
+
+  - label: "MILENE (in prep.)"
+    instrument: MILENE
+    setting: testbed
+    status: in-preparation
+    wavelength_um: [3.39]
+    null_depth: 0.008
+    label_position: bottom
+
+  - label: "Birbacher+2026 (NICE)"
+    plot_label: "Birbacher+2026\n(NICE)"
+    first_author: Birbacher
+    year: 2026
+    instrument: NICE
+    setting: testbed
+    status: published
+    wavelength_um: [4.7]
+    null_depth: 7e-6
+    highlight: true
+    label_position: bottom
+
+requirements:
+  - label: NICE requirement
+    description: On-axis null depth requirement of NICE.
+    curve:  # [wavelength_um, null_depth]
+      - [4.0201, 2.02809e-5]
+      - [4.0605, 1.98845e-5]
+      - [4.10131, 1.9496e-5]
+      - [4.14253, 1.91153e-5]
+      - [4.18417, 1.87423e-5]
+      - [4.22622, 1.8377e-5]
+      - [4.26869, 1.80192e-5]
+      - [4.31159, 1.76686e-5]
+      - [4.35493, 1.73264e-5]
+      - [4.39869, 1.69898e-5]
+      - [4.4429, 1.66604e-5]
+      - [4.48755, 1.63377e-5]
+      - [4.53266, 1.60216e-5]
+      - [4.57821, 1.5712e-5]
+      - [4.62422, 1.54088e-5]
+      - [4.6707, 1.5112e-5]
+      - [4.71764, 1.48214e-5]
+      - [4.76505, 1.45367e-5]
+      - [4.81294, 1.42581e-5]
+      - [4.86131, 1.39853e-5]
+      - [4.91017, 1.37184e-5]
+      - [4.95952, 1.34571e-5]
+      - [5.00936, 1.32014e-5]
+      - [5.05971, 1.29512e-5]
+      - [5.11056, 1.27064e-5]
+      - [5.16192, 1.2467e-5]
+      - [5.2138, 1.22329e-5]
+      - [5.2662, 1.2004e-5]
+      - [5.31913, 1.17801e-5]
+      - [5.37259, 1.15613e-5]
+      - [5.42658, 1.13474e-5]
+      - [5.48112, 1.11386e-5]
+      - [5.53621, 1.09346e-5]
+      - [5.59185, 1.07355e-5]
+      - [5.64805, 1.05411e-5]
+      - [5.70481, 1.03514e-5]
+      - [5.76215, 1.01665e-5]
+      - [5.82006, 9.98614e-6]
+      - [5.87855, 9.8105e-6]
+      - [5.93763, 9.6395e-6]
+      - [5.99731, 9.47308e-6]
+      - [6.05758, 9.31125e-6]
+      - [6.11846, 9.1558e-6]
+      - [6.17995, 9.00314e-6]
+      - [6.24206, 8.85506e-6]
+      - [6.3048, 8.71156e-6]
+      - [6.36816, 8.57267e-6]
+      - [6.43216, 8.4384e-6]
+      - [6.49681, 8.3088e-6]
+      - [6.5621, 8.18389e-6]
+      - [6.62805, 8.06372e-6]
+      - [6.69467, 7.94833e-6]
+      - [6.76195, 7.83781e-6]
+      - [6.82991, 7.73226e-6]
+      - [6.89855, 7.6317e-6]
+      - [6.96788, 7.5362e-6]
+      - [7.03791, 7.44585e-6]
+      - [7.10865, 7.36086e-6]
+      - [7.18009, 7.28129e-6]
+      - [7.25225, 7.20722e-6]
+      - [7.32514, 7.13884e-6]
+      - [7.39876, 7.07635e-6]
+      - [7.47312, 7.01972e-6]
+      - [7.54822, 6.96939e-6]
+      - [7.62408, 6.92515e-6]
+      - [7.70071, 6.88753e-6]
+      - [7.7781, 6.85686e-6]
+      - [7.85627, 6.83296e-6]
+      - [7.93523, 6.81645e-6]
+      - [8.01498, 6.80759e-6]
+      - [8.09554, 6.80637e-6]
+      - [8.1769, 6.81292e-6]
+      - [8.25908, 6.82785e-6]
+      - [8.34208, 6.85152e-6]
+      - [8.42592, 6.88397e-6]
+      - [8.51061, 6.92591e-6]
+      - [8.59614, 6.97765e-6]
+      - [8.68253, 7.03942e-6]
+      - [8.76979, 7.11169e-6]
+      - [8.85793, 7.19494e-6]
+      - [8.94696, 7.28958e-6]
+      - [9.03688, 7.39599e-6]
+      - [9.1277, 7.51485e-6]
+      - [9.21944, 7.64654e-6]
+      - [9.31209, 7.79161e-6]
+      - [9.40568, 7.94996e-6]
+      - [9.50021, 8.12308e-6]
+      - [9.59569, 8.31273e-6]
+      - [9.69213, 8.51743e-6]
+      - [9.78954, 8.73917e-6]
+      - [9.88793, 8.97863e-6]
+      - [9.9873, 9.23604e-6]
+      - [10.0877, 9.51186e-6]
+      - [10.1891, 9.80697e-6]
+      - [10.2915, 1.01224e-5]
+      - [10.3949, 1.04591e-5]
+      - [10.4994, 1.08178e-5]
+      - [10.6049, 1.11997e-5]
+      - [10.7115, 1.16057e-5]
+      - [10.8191, 1.20364e-5]
+      - [10.9279, 1.24931e-5]
+      - [11.0377, 1.2977e-5]
+      - [11.1486, 1.34889e-5]
+      - [11.2607, 1.40298e-5]
+      - [11.3738, 1.46014e-5]
+      - [11.4881, 1.52044e-5]
+      - [11.6036, 1.58405e-5]
+      - [11.7202, 1.65102e-5]
+      - [11.838, 1.72161e-5]
+      - [11.957, 1.79587e-5]
+      - [12.0772, 1.87394e-5]
+      - [12.1985, 1.95601e-5]
+      - [12.3211, 2.04219e-5]
+      - [12.445, 2.1326e-5]
+      - [12.57, 2.22747e-5]
+      - [12.6964, 2.32708e-5]
+      - [12.824, 2.43133e-5]
+      - [12.9529, 2.54056e-5]
+      - [13.083, 2.65493e-5]
+      - [13.2145, 2.77448e-5]
+      - [13.3473, 2.89951e-5]
+      - [13.4815, 3.03022e-5]
+      - [13.617, 3.16702e-5]
+      - [13.7538, 3.30991e-5]
+      - [13.8921, 3.45894e-5]
+      - [14.0317, 3.61471e-5]
+      - [14.1727, 3.77712e-5]
+      - [14.3151, 3.94658e-5]
+      - [14.459, 4.12331e-5]
+      - [14.6043, 4.30759e-5]
+      - [14.7511, 4.49958e-5]
+      - [14.8994, 4.69957e-5]
+      - [15.0491, 4.90778e-5]
+      - [15.2003, 5.12446e-5]
+      - [15.3531, 5.34994e-5]
+      - [15.5074, 5.58456e-5]
+      - [15.6633, 5.82855e-5]
+      - [15.8207, 6.08222e-5]
+      - [15.9797, 6.34596e-5]
+      - [16.1403, 6.61991e-5]
+      - [16.3025, 6.90436e-5]
+      - [16.4663, 7.19998e-5]
+      - [16.6318, 7.50658e-5]
+      - [16.799, 7.82489e-5]
+      - [16.9678, 8.15521e-5]
+      - [17.1384, 8.49797e-5]
+      - [17.3106, 8.8532e-5]
+      - [17.4846, 9.22164e-5]
+      - [17.6603, 9.60342e-5]
+      - [17.8378, 9.99945e-5]
+      - [18.0171, 0.000104094]
+      - [18.1981, 0.000108338]
+      - [18.381, 0.000112736]
+      - [18.4865, 0.000115322]

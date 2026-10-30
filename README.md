@@ -1,0 +1,27 @@
+# Null Depth History
+
+Static website with an interactive plot of the best achieved raw null depth of nulling interferometers as a function of wavelength.
+
+## Files
+
+- `index.html`, `style.css`, `app.js`: the website.
+- `data/null-depths.yaml`: all data. The comment at the top of the file defines the fields.
+
+## Run locally
+
+The page loads the data with `fetch`, so it needs an HTTP server:
+
+```sh
+python3 -m http.server 8000
+```
+
+Then open <http://localhost:8000/>.
+
+## Add a result
+
+Add an entry under `results:` in `data/null-depths.yaml`. The page checks each entry when it loads and shows an error message for a field with an incorrect value.
+
+## Libraries
+
+- [Plotly.js](https://plotly.com/javascript/) 2.35.2: plot.
+- [js-yaml](https://github.com/nodeca/js-yaml) 4.1.0: YAML parser.

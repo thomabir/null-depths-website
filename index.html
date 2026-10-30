@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Null Depth History</title>
+  <meta name="description" content="Best raw null depth of nulling interferometers as a function of wavelength.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Null Depth History</h1>
+      <p class="lede">Best raw null depth of nulling interferometers as a function of wavelength. The plot shows on-sky results, testbed results and the NICE null depth requirement. A bar shows the wavelength band of a broadband measurement. A dot shows a narrowband measurement.</p>
+    </header>
+
+    <section class="plot-card" aria-label="Plot">
+      <div id="plot" role="img" aria-label="Best achieved raw null depth against wavelength"></div>
+      <p class="hint">Scroll or drag a box to zoom. Shift and drag to pan. Double-click to reset the view. Click the legend to show or hide a group. Click an entry to open its reference.</p>
+    </section>
+
+    <section class="controls" aria-label="Plot settings">
+      <fieldset>
+        <legend>Axes</legend>
+        <label>Wavelength scale
+          <select id="x-scale">
+            <option value="linear">Linear</option>
+            <option value="log">Logarithmic</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" id="grid"> Grid</label>
+        <button type="button" id="reset">Reset view</button>
+      </fieldset>
+      <fieldset>
+        <legend>Labels</legend>
+        <label class="check"><input type="checkbox" id="labels" checked> Show labels</label>
+        <label>Font size <output id="label-size-value"></output>
+          <input type="range" id="label-size" min="8" max="18" step="1" value="11">
+        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Marks</legend>
+        <label>Bar width <output id="bar-width-value"></output>
+          <input type="range" id="bar-width" min="2" max="14" step="1" value="6">
+        </label>
+        <label>Dot size <output id="dot-size-value"></output>
+          <input type="range" id="dot-size" min="4" max="18" step="1" value="8">
+        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Export</legend>
+        <label>Image format
+          <select id="export-format">
+            <option value="svg">SVG</option>
+            <option value="png">PNG</option>
+          </select>
+        </label>
+        <button type="button" id="export">Download image</button>
+      </fieldset>
+    </section>
+
+    <section aria-labelledby="table-title">
+      <h2 id="table-title">Data</h2>
+      <p class="hint">Click a column heading to sort. Source data: <a href="data/null-depths.yaml"><code>data/null-depths.yaml</code></a>.</p>
+      <div class="table-wrap">
+        <table id="table">
+          <thead>
+            <tr>
+              <th data-key="ref" scope="col">Reference</th>
+              <th data-key="group" scope="col">Type</th>
+              <th data-key="wl1_um" scope="col">Wavelength (µm)</th>
+              <th data-key="nullDepth" scope="col">Null depth</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
