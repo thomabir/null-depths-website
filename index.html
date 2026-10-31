@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/svg2pdf.js@2.2.3/dist/svg2pdf.umd.min.js"></script>
   <script src="app.js" defer></script>
 </head>
 <body>
@@ -20,53 +22,54 @@
       <p class="lede">Best raw null depth of nulling interferometers as a function of wavelength. The plot shows on-sky results, testbed results and the NICE null depth requirement. A bar shows the wavelength band of a broadband measurement. A dot shows a narrowband measurement.</p>
     </header>
 
-    <section class="plot-card" aria-label="Plot">
-      <div id="plot" role="img" aria-label="Best achieved raw null depth against wavelength"></div>
-      <p class="hint">Scroll or drag a box to zoom. Shift and drag to pan. Double-click to reset the view. Click the legend to show or hide a group. Click an entry to open its reference.</p>
-    </section>
+    <div class="workspace">
+      <section class="plot-card" aria-label="Plot">
+        <div class="toolbar">
+          <div class="segmented" role="group" aria-label="Drag mode" data-state="dragMode">
+            <button type="button" data-value="zoom">Zoom</button>
+            <button type="button" data-value="pan">Pan</button>
+          </div>
+          <button type="button" id="reset">Reset view</button>
+          <span class="spacer"></span>
+          <span class="toolbar-label">Download</span>
+          <div class="segmented" role="group" aria-label="Download">
+            <button type="button" data-export="pdf">PDF</button>
+            <button type="button" data-export="svg">SVG</button>
+            <button type="button" data-export="png">PNG</button>
+          </div>
+        </div>
+        <div id="plot" role="img" aria-label="Best achieved raw null depth against wavelength"></div>
+        <p class="hint">Scroll to zoom. Drag to zoom a box (Zoom) or to move the view (Pan). Double-click to reset the view. Click a legend entry to show or hide a group. Click an entry to open its reference.</p>
+      </section>
 
-    <section class="controls" aria-label="Plot settings">
-      <fieldset>
-        <legend>Axes</legend>
-        <label>Wavelength scale
-          <select id="x-scale">
-            <option value="linear">Linear</option>
-            <option value="log">Logarithmic</option>
-          </select>
-        </label>
-        <label class="check"><input type="checkbox" id="grid"> Grid</label>
-        <button type="button" id="reset">Reset view</button>
-      </fieldset>
-      <fieldset>
-        <legend>Labels</legend>
-        <label class="check"><input type="checkbox" id="labels" checked> Show labels</label>
-        <label>Font size <output id="label-size-value"></output>
-          <input type="range" id="label-size" min="8" max="18" step="1" value="11">
-        </label>
-      </fieldset>
-      <fieldset>
-        <legend>Marks</legend>
-        <label>Bar width <output id="bar-width-value"></output>
-          <input type="range" id="bar-width" min="2" max="14" step="1" value="6">
-        </label>
-        <label>Dot size <output id="dot-size-value"></output>
-          <input type="range" id="dot-size" min="4" max="18" step="1" value="8">
-        </label>
-      </fieldset>
-      <fieldset>
-        <legend>Export</legend>
-        <label>Image format
-          <select id="export-format">
-            <option value="svg">SVG</option>
-            <option value="png">PNG</option>
-          </select>
-        </label>
-        <button type="button" id="export">Download image</button>
-      </fieldset>
-    </section>
+      <aside class="controls" aria-label="Plot settings">
+        <section>
+          <h2>Axes</h2>
+          <span class="field-label">Wavelength scale</span>
+          <div class="segmented full" role="group" aria-label="Wavelength scale" data-state="xScale">
+            <button type="button" data-value="linear">Linear</button>
+            <button type="button" data-value="log">Log</button>
+          </div>
+          <label class="check"><input type="checkbox" id="grid"> Grid</label>
+        </section>
+        <section>
+          <h2>Labels</h2>
+          <label class="check"><input type="checkbox" id="labels"> Show labels</label>
+          <label for="label-size" class="field-label">Font size <output id="label-size-value"></output></label>
+          <input type="range" id="label-size" min="8" max="18" step="1">
+        </section>
+        <section>
+          <h2>Marks</h2>
+          <label for="bar-width" class="field-label">Bar width <output id="bar-width-value"></output></label>
+          <input type="range" id="bar-width" min="2" max="14" step="1">
+          <label for="dot-size" class="field-label">Dot size <output id="dot-size-value"></output></label>
+          <input type="range" id="dot-size" min="4" max="18" step="1">
+        </section>
+      </aside>
+    </div>
 
     <section aria-labelledby="table-title">
-      <h2 id="table-title">Data</h2>
+      <h2 id="table-title" class="section-title">Data</h2>
       <p class="hint">Click a column heading to sort. Source data: <a href="data/null-depths.yaml"><code>data/null-depths.yaml</code></a>.</p>
       <div class="table-wrap">
         <table id="table">

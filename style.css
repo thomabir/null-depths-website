@@ -6,6 +6,7 @@
   --border: #dcdcd8;
   --grid: #e6e6e2;
   --accent: #1f6fb4;
+  --accent-fg: #ffffff;
   --on-sky: #1f8fd6;
   --testbed: #111111;
   --this-work: #f07c0e;
@@ -13,8 +14,9 @@
   color-scheme: light;
 }
 
+/* The class force-light gives the light palette for image export. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.force-light) {
     --bg: #141517;
     --surface: #1c1d20;
     --fg: #e8e8e6;
@@ -22,6 +24,7 @@
     --border: #34363a;
     --grid: #2b2d31;
     --accent: #6cb2ee;
+    --accent-fg: #0d1a26;
     --on-sky: #4aa8ec;
     --testbed: #e8e8e6;
     --this-work: #ff9a3c;
@@ -44,9 +47,9 @@ body {
 }
 
 main {
-  max-width: 1100px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 32px 16px 64px;
+  padding: 24px 16px 64px;
 }
 
 h1 {
@@ -55,7 +58,7 @@ h1 {
   margin: 0 0 8px;
 }
 
-h2 {
+.section-title {
   font-size: 1.25rem;
   font-weight: 600;
   margin: 40px 0 8px;
@@ -63,63 +66,107 @@ h2 {
 
 .lede {
   color: var(--muted);
-  max-width: 70ch;
-  margin: 0 0 24px;
+  max-width: 80ch;
+  margin: 0 0 20px;
 }
 
 .hint {
   color: var(--muted);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   margin: 8px 0 0;
 }
 
-.plot-card {
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr) 248px;
+  }
+
+  .controls {
+    position: sticky;
+    top: 16px;
+  }
+}
+
+.plot-card,
+.controls {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
+}
+
+.plot-card {
   padding: 12px;
+  min-width: 0;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+.toolbar-label {
+  color: var(--muted);
+  font-size: 0.85rem;
 }
 
 #plot {
   width: 100%;
-  height: min(70vh, 640px);
-  min-height: 380px;
+  height: clamp(380px, 68vh, 680px);
 }
 
 .controls {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  margin-top: 16px;
+  padding: 4px 16px 16px;
 }
 
-fieldset {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 16px 16px;
-  margin: 0;
+.controls section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
 }
 
-legend {
+.controls section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.controls h2 {
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin: 0;
 }
 
-label {
+.field-label {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  justify-content: space-between;
   font-size: 0.9rem;
 }
 
 label.check {
-  flex-direction: row;
+  display: flex;
   align-items: center;
   gap: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 output {
@@ -127,32 +174,74 @@ output {
   font-variant-numeric: tabular-nums;
 }
 
-select,
 button {
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.2;
   color: var(--fg);
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 6px 10px;
-}
-
-button {
+  padding: 6px 12px;
   cursor: pointer;
-  align-self: flex-start;
 }
 
 button:hover {
   border-color: var(--accent);
 }
 
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.segmented {
+  display: inline-flex;
+}
+
+.segmented.full {
+  display: flex;
+}
+
+.segmented.full button {
+  flex: 1;
+}
+
+.segmented button {
+  border-radius: 0;
+  margin-left: -1px;
+}
+
+.segmented button:first-child {
+  border-radius: 6px 0 0 6px;
+  margin-left: 0;
+}
+
+.segmented button:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+  position: relative;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
 input[type="range"] {
   width: 100%;
+  margin: 0;
   accent-color: var(--accent);
 }
 
 input[type="checkbox"] {
+  margin: 0;
   accent-color: var(--accent);
 }
 
@@ -212,5 +301,4 @@ a {
   height: 10px;
   border-radius: 2px;
   margin-right: 6px;
-  vertical-align: baseline;
 }

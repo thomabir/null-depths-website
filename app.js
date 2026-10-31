@@ -3,6 +3,10 @@
 const DATA_URL = "data/null-depths.yaml";
 const BAR_SAMPLES = 40;
 const LABEL_GAP = 6; // px
+const EXPORT_NAME = "null-depth-history";
+const PNG_SCALE = 3;
+const PDF_FONT_URL = "fonts/PlotSans-Regular.ttf";
+const PDF_FONT_NAME = "PlotSans";
 const LABEL_POSITIONS = {
   right: "middle right",
   left: "middle left",
@@ -29,7 +33,7 @@ const state = {
   labelSize: 11,
   barWidth: 6,
   dotSize: 8,
-  exportFormat: "svg",
+  dragMode: "zoom",
   viewRevision: 0,
   sortKey: "wl1_um",
   sortDir: 1,
@@ -232,13 +236,14 @@ function buildLayout() {
   };
   return {
     uirevision: `${state.xScale}-${state.viewRevision}`,
+    autosize: true,
     font: { family: "Fira Sans, system-ui, sans-serif", color: fg, size: 13 },
     paper_bgcolor: cssVar("--surface"),
     plot_bgcolor: cssVar("--surface"),
-    margin: { l: 72, r: 24, t: 16, b: 56 },
+    margin: { l: 72, r: 24, t: 40, b: 64 },
     hovermode: "closest",
     hoverlabel: { font: { family: "Fira Sans, system-ui, sans-serif" } },
-    dragmode: "zoom",
+    dragmode: state.dragMode,
     xaxis: {
       ...axisCommon,
       type: state.xScale,
@@ -255,13 +260,12 @@ function buildLayout() {
       dtick: 1,
     },
     legend: {
-      x: 0.99,
-      y: 0.99,
-      xanchor: "right",
-      yanchor: "top",
-      bgcolor: cssVar("--surface"),
-      bordercolor: cssVar("--border"),
-      borderwidth: 1,
+      orientation: "h",
+      x: 0,
+      y: 1,
+      xanchor: "left",
+      yanchor: "bottom",
+      bgcolor: "rgba(0, 0, 0, 0)",
     },
   };
 }
@@ -270,9 +274,7 @@ function buildConfig() {
   return {
     responsive: true,
     scrollZoom: true,
-    displaylogo: false,
-    modeBarButtonsToRemove: ["lasso2d", "select2d", "autoScale2d"],
-    toImageButtonOptions: { format: state.exportFormat, filename: "null-depth-history", scale: 2 },
+    displayModeBar: false,
   };
 }
 
@@ -350,17 +352,21 @@ function bindControls(data) {
       rerender();
     });
   };
-  const bindSelect = (id, key) => {
-    const input = document.getElementById(id);
-    input.value = state[key];
-    input.addEventListener("change", () => {
-      state[key] = input.value;
-      rerender();
-    });
+  const bindSegmented = (group) => {
+    const key = group.dataset.state;
+    const buttons = [...group.querySelectorAll("button")];
+    const update = () => buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.value === state[key])));
+    update();
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        state[key] = button.dataset.value;
+        update();
+        rerender();
+      });
+    }
   };
 
-  bindSelect("x-scale", "xScale");
-  bindSelect("export-format", "exportFormat");
+  document.querySelectorAll(".segmented[data-state]").forEach(bindSegmented);
   bindCheck("grid", "grid");
   bindCheck("labels", "labels");
   bindRange("label-size", "labelSize");
@@ -371,9 +377,19 @@ function bindControls(data) {
     state.viewRevision += 1;
     rerender();
   });
-  document.getElementById("export").addEventListener("click", () => {
-    Plotly.downloadImage("plot", { format: state.exportFormat, filename: "null-depth-history", scale: 2 });
-  });
+  for (const button of document.querySelectorAll("button[data-export]")) {
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      try {
+        await exportImage(data, button.dataset.export);
+      } catch (err) {
+        console.error(err);
+        alert(`Export failed: ${err.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
   for (const th of document.querySelectorAll("#table th")) {
     th.addEventListener("click", () => {
       state.sortDir = th.dataset.key === state.sortKey ? -state.sortDir : 1;
@@ -385,6 +401,86 @@ function bindControls(data) {
     rerender();
     renderTable(data);
   });
+}
+
+async function loadPdfFont() {
+  const response = await fetch(PDF_FONT_URL);
+  if (!response.ok) throw new Error(`${PDF_FONT_URL}: HTTP ${response.status}`);
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  let binary = "";
+  for (const b of bytes) binary += String.fromCharCode(b);
+  return btoa(binary);
+}
+
+function plotSize() {
+  const layout = document.getElementById("plot")._fullLayout;
+  return { width: layout.width, height: layout.height };
+}
+
+// Renders the plot with the light palette, calls fn, then restores the page palette.
+async function withLightPalette(data, fn) {
+  const root = document.documentElement;
+  root.classList.add("force-light");
+  await render(data);
+  try {
+    return await fn();
+  } finally {
+    root.classList.remove("force-light");
+    await render(data);
+  }
+}
+
+// svg2pdf does not resolve percent font sizes and em offsets on tspan elements, which Plotly uses for exponents.
+function resolveRelativeTextUnits(svg) {
+  for (const tspan of svg.querySelectorAll("text tspan")) {
+    const parentSize = parseFloat(tspan.closest("text").style.fontSize);
+    const percent = /font-size:\s*([\d.]+)%/.exec(tspan.getAttribute("style") ?? "");
+    const size = percent ? (parentSize * Number(percent[1])) / 100 : parentSize;
+    if (percent) tspan.style.fontSize = `${size}px`;
+    const dy = tspan.getAttribute("dy");
+    if (dy?.endsWith("em")) tspan.setAttribute("dy", String(parseFloat(dy) * size));
+  }
+  const walker = document.createTreeWalker(svg, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    node.nodeValue = node.nodeValue.replaceAll("​", "");
+  }
+}
+
+async function buildPdf(data) {
+  const { width, height } = plotSize();
+  const svgUrl = await withLightPalette(data, () => Plotly.toImage("plot", { format: "svg", width, height }));
+  const svgText = decodeURIComponent(svgUrl.replace(/^data:image\/svg\+xml,/, ""));
+  const svg = new DOMParser().parseFromString(svgText, "image/svg+xml").documentElement;
+  for (const el of svg.querySelectorAll("[style*='font-family']")) el.style.fontFamily = PDF_FONT_NAME;
+  for (const el of svg.querySelectorAll("[font-family]")) el.setAttribute("font-family", PDF_FONT_NAME);
+  resolveRelativeTextUnits(svg);
+
+  const doc = new jspdf.jsPDF({ orientation: width > height ? "landscape" : "portrait", unit: "pt", format: [width, height] });
+  doc.addFileToVFS(`${PDF_FONT_NAME}.ttf`, await loadPdfFont());
+  doc.addFont(`${PDF_FONT_NAME}.ttf`, PDF_FONT_NAME, "normal");
+  doc.setFont(PDF_FONT_NAME);
+
+  // svg2pdf reads computed styles, so the SVG must be in the document.
+  const holder = document.createElement("div");
+  holder.style.cssText = "position:absolute;left:-10000px;top:0;";
+  holder.append(svg);
+  document.body.append(holder);
+  try {
+    await doc.svg(svg, { x: 0, y: 0, width, height });
+  } finally {
+    holder.remove();
+  }
+  return doc;
+}
+
+async function exportImage(data, format) {
+  if (format === "pdf") {
+    const doc = await buildPdf(data);
+    doc.save(`${EXPORT_NAME}.pdf`);
+    return;
+  }
+  const { width, height } = plotSize();
+  await withLightPalette(data, () => Plotly.downloadImage("plot", { format, filename: EXPORT_NAME, width, height, scale: PNG_SCALE }));
 }
 
 function bindPlotClicks() {
@@ -408,4 +504,4 @@ async function main() {
   }
 }
 
-main();
+window.appReady = main();

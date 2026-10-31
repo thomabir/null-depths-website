@@ -6,6 +6,11 @@ Static website with an interactive plot of the best achieved raw null depth of n
 
 - `index.html`, `style.css`, `app.js`: the website.
 - `data/null-depths.yaml`: all data. The comment at the top of the file defines the fields.
+- `fonts/PlotSans-Regular.ttf`: font for the PDF export. See `fonts/README.md`.
+
+## Export
+
+The toolbar above the plot downloads the current view as PDF, SVG or PNG. The export always uses the light colour palette. The PDF is vector graphics with the font embedded.
 
 ## Run locally
 
@@ -25,3 +30,4 @@ Add an entry under `results:` in `data/null-depths.yaml`. The page checks each e
 
 - [Plotly.js](https://plotly.com/javascript/) 2.35.2: plot.
 - [js-yaml](https://github.com/nodeca/js-yaml) 4.1.0: YAML parser.
+- [jsPDF](https://github.com/parallax/jsPDF) 2.5.1 and [svg2pdf.js](https://github.com/yWorks/svg2pdf.js) 2.2.3: PDF export.
