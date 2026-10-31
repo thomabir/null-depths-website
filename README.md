@@ -14,10 +14,10 @@ The toolbar above the plot downloads the current view as PDF, SVG or PNG. The ex
 
 ## Run locally
 
-The page loads the data with `fetch`, so it needs an HTTP server:
+The page loads the data with `fetch`, so it needs an HTTP server. `serve.py` is an HTTP server that disables browser caching:
 
 ```sh
-python3 -m http.server 8000
+python3 serve.py
 ```
 
 Then open <http://localhost:8000/>.
