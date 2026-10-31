@@ -20,6 +20,12 @@ const DEFAULT_RANGE = {
   log: { x: [Math.log10(0.5), Math.log10(20)], y: [-7, -1] },
 };
 
+// Plotly changes layout range arrays in place on zoom, so it must get copies.
+function defaultRange() {
+  const range = DEFAULT_RANGE[state.xScale];
+  return { x: [...range.x], y: [...range.y] };
+}
+
 const GROUPS = [
   { id: "on-sky", name: "On-sky", colorVar: "--on-sky" },
   { id: "testbed", name: "Testbed", colorVar: "--testbed" },
@@ -34,7 +40,6 @@ const state = {
   barWidth: 6,
   dotSize: 8,
   dragMode: "zoom",
-  viewRevision: 0,
   sortKey: "wl1_um",
   sortDir: 1,
 };
@@ -223,7 +228,7 @@ function requirementTraces(requirements) {
 function buildLayout() {
   const fg = cssVar("--fg");
   const grid = cssVar("--grid");
-  const range = DEFAULT_RANGE[state.xScale];
+  const range = defaultRange();
   const axisCommon = {
     showline: true,
     linecolor: fg,
@@ -235,7 +240,7 @@ function buildLayout() {
     zeroline: false,
   };
   return {
-    uirevision: `${state.xScale}-${state.viewRevision}`,
+    uirevision: state.xScale,
     autosize: true,
     font: { family: "Fira Sans, system-ui, sans-serif", color: fg, size: 13 },
     paper_bgcolor: cssVar("--surface"),
@@ -374,8 +379,8 @@ function bindControls(data) {
   bindRange("dot-size", "dotSize");
 
   document.getElementById("reset").addEventListener("click", () => {
-    state.viewRevision += 1;
-    rerender();
+    const range = defaultRange();
+    Plotly.relayout("plot", { "xaxis.range": range.x, "yaxis.range": range.y });
   });
   for (const button of document.querySelectorAll("button[data-export]")) {
     button.addEventListener("click", async () => {
