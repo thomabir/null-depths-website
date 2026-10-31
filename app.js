@@ -2,7 +2,7 @@
 
 const DATA_URL = "data/null-depths.yaml";
 const BAR_SAMPLES = 40;
-const LABEL_GAP = 6; // px
+const LABEL_GAP = 4; // px, distance between a label and the edge of its mark
 const EXPORT_NAME = "null-depth-history";
 const PNG_SCALE = 3;
 const PDF_FONT_URL = "fonts/PlotSans-Regular.ttf";
@@ -139,6 +139,13 @@ function labelAnchor(e) {
   return state.xScale === "log" ? Math.sqrt(e.wl1_um * e.wl2_um) : (e.wl1_um + e.wl2_um) / 2;
 }
 
+// Plotly offsets text by half the marker size, so this size sets the distance between label and mark.
+function labelOffsetSize(e) {
+  if (!e.isBand) return state.dotSize + 2 * LABEL_GAP;
+  const besideBar = e.labelPosition === "right" || e.labelPosition === "left";
+  return besideBar ? 2 * LABEL_GAP : state.barWidth + 2 * LABEL_GAP;
+}
+
 function groupTraces(group, entries) {
   const color = cssVar(group.colorVar);
   const bands = entries.filter((e) => e.isBand);
@@ -197,7 +204,7 @@ function groupTraces(group, entries) {
         text: subset.map((e) => e.plotLabel.replaceAll("\n", "<br>")),
         customdata: subset.map(hoverData),
         textposition: plotlyPosition,
-        marker: { size: Math.max(state.barWidth, state.dotSize) + LABEL_GAP, opacity: 0 },
+        marker: { size: subset.map(labelOffsetSize), opacity: 0 },
         textfont: {
           size: isHighlight ? state.labelSize + 2 : state.labelSize,
           color: isHighlight ? color : cssVar("--fg"),
