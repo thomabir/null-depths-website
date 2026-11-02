@@ -24,7 +24,7 @@ Then open <http://localhost:8000/>.
 
 ## Add a result
 
-Add an entry under `results:` in `data/null-depths.yaml`. The page checks each entry when it loads and shows an error message for a field with an incorrect value.
+Add an entry under `results:` in `data/null-depths.yaml`. For an internal lab milestone without a publication, set `status: unpublished`. The page checks each entry when it loads and shows an error message for a field with an incorrect value.
 
 ## Libraries
 

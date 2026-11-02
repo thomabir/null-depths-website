@@ -14,7 +14,12 @@ const LABEL_POSITIONS = {
   bottom: "bottom center",
 };
 const SETTINGS = ["on-sky", "testbed"];
-const STATUSES = ["published", "in-preparation"];
+// Text added to the type column of the table for each status.
+const STATUSES = {
+  published: "",
+  "in-preparation": " (in preparation)",
+  unpublished: " (unpublished)",
+};
 const DEFAULT_RANGE = {
   linear: { x: [0, 18.5], y: [-7, -1] },
   log: { x: [Math.log10(0.5), Math.log10(20)], y: [-7, -1] },
@@ -48,12 +53,21 @@ function fail(message) {
   throw new Error(`${DATA_URL}: ${message}`);
 }
 
+// An empty YAML field gives null, so null and undefined both mean "not set".
+function isSet(value) {
+  return value !== null && value !== undefined;
+}
+
 function validateResult(r, i) {
-  const where = `results[${i}] (${r.label ?? "no label"})`;
-  if (typeof r.label !== "string") fail(`${where}: label must be a string.`);
-  if (r.plot_label !== undefined && typeof r.plot_label !== "string") fail(`${where}: plot_label must be a string.`);
+  const where = `results[${i}] (${r.label ?? r.plot_label ?? "no label"})`;
+  if (isSet(r.label) && typeof r.label !== "string") fail(`${where}: label must be a string.`);
+  if (isSet(r.plot_label) && typeof r.plot_label !== "string") fail(`${where}: plot_label must be a string.`);
+  if (!isSet(r.label) && !isSet(r.plot_label)) fail(`${where}: label or plot_label must be set.`);
+  if (isSet(r.url) && typeof r.url !== "string") fail(`${where}: url must be a string.`);
+  if (isSet(r.highlight) && typeof r.highlight !== "boolean") fail(`${where}: highlight must be true or false.`);
+  if (isSet(r.display) && typeof r.display !== "boolean") fail(`${where}: display must be true or false.`);
   if (!SETTINGS.includes(r.setting)) fail(`${where}: setting must be one of ${SETTINGS.join(", ")}.`);
-  if (!STATUSES.includes(r.status)) fail(`${where}: status must be one of ${STATUSES.join(", ")}.`);
+  if (!(r.status in STATUSES)) fail(`${where}: status must be one of ${Object.keys(STATUSES).join(", ")}.`);
   const wl = r.wavelength_um;
   if (!Array.isArray(wl) || wl.length < 1 || wl.length > 2 || !wl.every((w) => Number.isFinite(w) && w > 0)) {
     fail(`${where}: wavelength_um must be a list of one or two positive numbers.`);
@@ -61,7 +75,7 @@ function validateResult(r, i) {
   if (wl.length === 2 && wl[0] > wl[1]) fail(`${where}: wavelength_um must be in increasing order.`);
   if (!Number.isFinite(r.null_depth) || r.null_depth <= 0) fail(`${where}: null_depth must be a positive number.`);
   const pos = r.label_position ?? "right";
-  if (!(pos in LABEL_POSITIONS)) fail(`${where}: label_position must be one of ${Object.keys(LABEL_POSITIONS).join(", ")}.`);
+  if (!Object.hasOwn(LABEL_POSITIONS, pos)) fail(`${where}: label_position must be one of ${Object.keys(LABEL_POSITIONS).join(", ")}.`);
 }
 
 function validateRequirement(req, i) {
@@ -75,7 +89,7 @@ function toEntry(r) {
   const wl = r.wavelength_um;
   return {
     plotLabel: r.plot_label ?? r.label,
-    ref: r.label,
+    ref: r.label ?? r.plot_label.replaceAll("\n", " "),
     url: r.url ?? null,
     group: r.highlight ? "highlight" : r.setting,
     status: r.status,
@@ -95,7 +109,8 @@ async function loadData() {
   const requirements = doc.requirements ?? [];
   results.forEach(validateResult);
   requirements.forEach(validateRequirement);
-  return { entries: results.map(toEntry), requirements };
+  const shown = results.filter((r) => r.display ?? true);
+  return { entries: shown.map(toEntry), requirements };
 }
 
 function cssVar(name) {
@@ -327,7 +342,7 @@ function renderTable(data) {
       const swatch = document.createElement("span");
       swatch.className = "swatch";
       swatch.style.background = groupColor[e.group];
-      type.append(swatch, groupName[e.group] + (e.status === "in-preparation" ? " (in preparation)" : ""));
+      type.append(swatch, groupName[e.group] + STATUSES[e.status]);
       const wl = document.createElement("td");
       wl.className = "num";
       wl.textContent = formatWavelengthRange(e);

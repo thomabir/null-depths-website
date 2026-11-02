@@ -2,18 +2,21 @@
 # Units: wavelength in µm. Null depth is a ratio without unit.
 #
 # Fields of a result:
-#   label           Short reference, for example "Author+Year (Instrument)".
-#   plot_label      Text on the plot. \n makes a line break. Optional, default label.
-#   first_author    Family name of the first author.
-#   year            Year of publication.
-#   instrument      Instrument or testbed name.
+#   label           Short reference, for example "Author+Year (Instrument)". Optional if plot_label is set.
+#   plot_label      Text on the plot. \n makes a line break. Optional if label is set, default label.
+#   first_author    Family name of the first author. Optional.
+#   year            Year of publication or measurement. Optional.
+#   instrument      Instrument or testbed name. Optional.
 #   setting         on-sky or testbed.
-#   status          published or in-preparation.
+#   status          published, in-preparation, or unpublished (internal lab milestone).
 #   wavelength_um   [min, max] for a broadband measurement, [value] for a narrowband measurement.
 #   null_depth      Best achieved raw null depth.
 #   url             Link to the publication. Optional.
 #   highlight       true to show the result as "This work". Optional.
 #   label_position  right, left, top or bottom. Optional, default right.
+#   display         false to remove the result from the plot and the table. Optional, default true.
+#
+# A lab milestone has no publication. Set status: unpublished and use plot_label for the date, for example "2026-10-06".
 
 results:
   - label: "Hinz+1998 (MMT)"
@@ -299,7 +302,7 @@ results:
     label_position: bottom
 
   - label: "Birbacher+2026 (NICE)"
-    plot_label: "Birbacher+2026\n(NICE)"
+    plot_label: "2025"
     first_author: Birbacher
     year: 2026
     instrument: NICE
@@ -308,7 +311,57 @@ results:
     wavelength_um: [4.7]
     null_depth: 7e-6
     highlight: true
-    label_position: bottom
+    label_position: right
+  
+  - label:
+    plot_label: "2026-10-06"
+    first_author:
+    year: 2026
+    instrument: NICE
+    setting: testbed
+    status: unpublished
+    wavelength_um: [4.7]
+    null_depth: 2e-6
+    highlight: true
+    label_position: right
+
+  - label:
+    plot_label: "2026-10-29"
+    first_author:
+    year: 2026
+    instrument: NICE
+    setting: testbed
+    status: unpublished
+    wavelength_um: [4.0]
+    null_depth: 3e-5
+    highlight: true
+    label_position: right
+    display: false
+
+  - label:
+    plot_label: "2026-10-30"
+    first_author:
+    year: 2026
+    instrument: NICE
+    setting: testbed
+    status: unpublished
+    wavelength_um: [4.0]
+    null_depth: 9e-6
+    highlight: true
+    label_position: right
+    display: true
+
+  - label:
+    plot_label: "2026-10-30"
+    first_author:
+    year: 2026
+    instrument: NICE
+    setting: testbed
+    status: unpublished
+    wavelength_um: [4.0, 4.7]
+    null_depth: 2e-5
+    highlight: true
+    label_position: right
 
 requirements:
   - label: NICE requirement
