@@ -348,7 +348,7 @@ results:
     wavelength_um: [4.0]
     null_depth: 9e-6
     highlight: true
-    label_position: right
+    label_position: bottom
     display: true
 
   - label:
@@ -360,6 +360,18 @@ results:
     status: unpublished
     wavelength_um: [4.0, 4.7]
     null_depth: 2e-5
+    highlight: true
+    label_position: right
+
+  - label:
+    plot_label: "2026-11-10"
+    first_author:
+    year: 2026
+    instrument: NICE
+    setting: testbed
+    status: unpublished
+    wavelength_um: [4.0, 4.7]
+    null_depth: 1e-5
     highlight: true
     label_position: right
 
